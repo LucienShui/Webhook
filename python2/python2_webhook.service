@@ -1,0 +1,16 @@
+[Unit]
+Description=Python2 Webhook
+After=network.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/usr/local/python2_webhook
+ExecStart=/usr/bin/python2 /usr/local/python2_webhook/server.py
+
+Restart=on-failure
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
