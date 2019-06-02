@@ -1,0 +1,16 @@
+[Unit]
+Description=Python3 Webhook
+After=network.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/usr/local/python3_webhook
+ExecStart=/usr/bin/python3 /usr/local/python3_webhook/server.py
+
+Restart=on-failure
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

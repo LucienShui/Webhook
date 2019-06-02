@@ -1,8 +1,7 @@
-#-*- coding:utf-8 -*-
-import BaseHTTPServer
+from http.server import HTTPServer, BaseHTTPRequestHandler
 import os
 
-class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+class RequestHandler(BaseHTTPRequestHandler):
     '''Process & Accept requests'''
 
     # Process an GET requests
@@ -13,6 +12,6 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 if __name__ == '__main__':
     serverAddress = ('', 10086)
-    server = BaseHTTPServer.HTTPServer(serverAddress, RequestHandler)
+    server = HTTPServer(serverAddress, RequestHandler)
     server.serve_forever()
 
