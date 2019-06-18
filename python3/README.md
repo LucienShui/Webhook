@@ -6,7 +6,7 @@
 git clone https://github.com/LucienShui/Webhook.git
 cd Webhook
 cp -r python3 /usr/local/python3_webhook
-ln -s /usr/local/python3_webhook/python3_webhook.service /lib/system/system
+ln -s /usr/local/python3_webhook/python3_webhook.service /lib/systemd/system
 systemctl daemon-reload
 ```
 
