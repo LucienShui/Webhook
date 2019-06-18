@@ -6,7 +6,7 @@
 git clone https://github.com/LucienShui/Webhook.git
 cd Webhook
 cp -r python2 /usr/local/python2_webhook
-ln -s /usr/local/python2_webhook/python2_webhook.service /lib/system/system
+ln -s /usr/local/python2_webhook/python2_webhook.service /lib/systemd/system
 systemctl daemon-reload
 ```
 
