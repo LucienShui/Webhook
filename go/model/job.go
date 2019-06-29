@@ -13,21 +13,26 @@ import (
 	"time"
 )
 
-type Data struct {
-	Name string `gorm:"primary_key"`
-	Script string `gorm:"type:text"`
-	Password string `gorm:"type:varchar(16)"`
-	History []History
+type Job struct {
+	Name      string `gorm:"type:varchar(32);primary key;index;" json:"name"`
+	Script    string `gorm:"type:text" json:"script"`
+	Password  string `gorm:"type:varchar(16)" json:"password"`
 	CreatedAt time.Time
 	DeletedAt *time.Time
 }
 
-func (object *Data) Get() error {
+func (object *Job) Get() error {
 	return db.Find(&object, "`name` = ?", object.Name).Error
 }
 
-func (object *Data) Save() error {
+func (object *Job) Save() error {
 	return db.Create(&object).Error
 }
 
-
+func (object *Job) Add(content string) error {
+	history := History{
+		Name:    object.Name,
+		Content: content,
+	}
+	return history.Save()
+}

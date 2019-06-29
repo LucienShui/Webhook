@@ -12,6 +12,7 @@ package model
 import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
+	"os"
 )
 
 var db *gorm.DB
@@ -22,5 +23,17 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+	if os.Getenv("GIN_MODE") != "release" {
+		db = db.Debug()
+	}
+	if !db.HasTable(&Job{}) {
+		if err := db.CreateTable(&Job{}).Error; err != nil {
+			panic(err)
+		}
+	}
+	if !db.HasTable(&History{}) {
+		if err := db.CreateTable(&History{}).Error; err != nil {
+			panic(err)
+		}
+	}
 }
-

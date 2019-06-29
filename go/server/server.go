@@ -16,9 +16,10 @@ import (
 
 var router *gin.Engine
 
-func init () {
+func init() {
 	router = gin.Default()
-	router.GET("/:name", post)
+	router.GET("/:name", request)
+	router.PUT("/:name", create)
 }
 
 func Run(address string, port uint16) error {
