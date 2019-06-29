@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-echo [`date`] Test
+echo `date` Test

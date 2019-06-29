@@ -12,28 +12,18 @@ package server
 import (
 	"github.com/LucienShui/Webhook/go/model"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
 	"net/http"
 	"os/exec"
 )
 
 func cmd(object model.Job) {
-	cmd := exec.Command("sh", "-x", object.Script, "2>&1")
-	stdout, err := cmd.StdoutPipe()
+	cmd := exec.Command("bash", "-x", object.Script)
+	out, err := cmd.CombinedOutput()
 	if err != nil {
 		panic(err) // TODO
 	} else {
-		if err := cmd.Start(); err != nil {
+		if err := object.Add(string(out)); err != nil {
 			panic(err) // TODO
-		} else {
-			output, err := ioutil.ReadAll(stdout)
-			if err != nil {
-				panic(err) // TODO
-			} else {
-				if err := object.Add(string(output)); err != nil {
-					panic(err) // TODO
-				}
-			}
 		}
 	}
 }
