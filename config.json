@@ -1,0 +1,16 @@
+{
+    "address": "0.0.0.0",
+    "port": 10086,
+    "webhooks": [
+        {
+            "name": "name0",
+            "script": "script0",
+            "password": "password0"
+        },
+        {
+            "name": "name1",
+            "script": "script1",
+            "password": "password1"
+        }
+    ]
+}
