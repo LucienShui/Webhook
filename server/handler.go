@@ -11,18 +11,26 @@ package server
 
 import (
 	"fmt"
+	"github.com/LucienShui/Webhook/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os/exec"
 )
 
-func cmd(script string) {
-	cmd := exec.Command("bash", "-c", script)
+func cmd(webhook model.Webhook) {
+	cmd := exec.Command("bash", "-c", webhook.Script)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		panic(err) // TODO
 	} else {
 		fmt.Println(string(out))
+		history := model.History{
+			Name: webhook.Name,
+			Content: string(out),
+		}
+		if err := history.Save(); err != nil {
+			panic(err) // TODO
+		}
 	}
 }
 
@@ -37,7 +45,7 @@ func request(context *gin.Context) {
 		})
 	} else {
 		if password == webhook.Password {
-			go cmd(webhook.Script)
+			go cmd(webhook)
 		}
 		context.JSON(http.StatusOK, gin.H{
 			"status":  http.StatusAccepted,

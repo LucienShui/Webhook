@@ -1,48 +1,36 @@
 /*
 @File: model.go
 @Contact: lucien@lucien.ink
-@Licence: (C)Copyright 2019 Lucien
+@Licence: (C)Copyright 2019 Lucien Shui
 
 @Modify Time      @Author    @Version    @Description
 ------------      -------    --------    -----------
-2019-07-24 23:29  Lucien     1.0         Init
+2019-07-25 01:39  Lucien     1.0         Init
 */
 package model
 
 import (
-	"encoding/json"
-	"errors"
-	"io/ioutil"
+	"github.com/jinzhu/gorm"
+	_ "github.com/mattn/go-sqlite3"
+	"os"
 )
 
-type Webhook struct {
-	Name string `json:"name"`
-	Script string `json:"script"`
-	Password string `json:"password"`
-}
+var db *gorm.DB
 
-type Config struct {
-	Address string `json:"address"`
-	Port uint16 `json:"port"`
-	Webhooks []Webhook `json:"webhooks"`
-}
-
-func (config *Config) Load(filename string) {
-	data, err := ioutil.ReadFile(filename)
+func init() {
+	var err error
+	db, err = gorm.Open("sqlite3", "webhook.db")
 	if err != nil {
-		panic(err) // TODO
+		panic(err)
 	}
-	err = json.Unmarshal(data, &config)
-	if err != nil {
-		panic(err) // TODO
-	}
-}
 
-func (config *Config) Get(name string) (Webhook, error) {
-	for _, webhook := range config.Webhooks {
-		if webhook.Name == name {
-			return webhook, nil
+	if os.Getenv("GIN_MODE") != "release" {
+		db = db.Debug()
+	}
+
+	if !db.HasTable(&History{}) {
+		if err := db.CreateTable(&History{}).Error; err != nil {
+			panic(err)
 		}
 	}
-	return Webhook{}, errors.New("not exist")
 }
