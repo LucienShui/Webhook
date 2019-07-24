@@ -3,14 +3,14 @@
     "port": 10086,
     "webhooks": [
         {
-            "name": "name0",
-            "script": "script0",
-            "password": "password0"
+            "name": "hello",
+            "script": "echo 'Hello World!'",
+            "password": ""
         },
         {
-            "name": "name1",
-            "script": "script1",
-            "password": "password1"
+            "name": "test",
+            "script": "echo 'Password'",
+            "password": "password"
         }
     ]
 }

@@ -11,16 +11,20 @@ package server
 
 import (
 	"fmt"
+	"github.com/LucienShui/Webhook/model"
 	"github.com/gin-gonic/gin"
 )
 
 var router *gin.Engine
+var config = model.Config{}
 
 func init() {
 	router = gin.Default()
+	config.Load("config.json")
 	router.GET("/:name", request)
+	router.NoRoute(notFound)
 }
 
-func Run(address string, port uint16) error {
-	return router.Run(fmt.Sprintf("%s:%d", address, port))
+func Run() error {
+	return router.Run(fmt.Sprintf("%s:%d", config.Address, config.Port))
 }

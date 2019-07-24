@@ -10,12 +10,11 @@
 package main
 
 import (
-	"fmt"
-	"github.com/LucienShui/Webhook/model"
+	"github.com/LucienShui/Webhook/server"
 )
 
 func main() {
-	config := model.Config{}
-	config.Load("config.json")
-	fmt.Printf("%+v", config)
+	if err := server.Run(); err != nil {
+		panic(err) // TODO
+	}
 }

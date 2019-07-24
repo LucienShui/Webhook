@@ -11,14 +11,13 @@ package server
 
 import (
 	"fmt"
-	"github.com/LucienShui/Webhook/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os/exec"
 )
 
 func cmd(script string) {
-	cmd := exec.Command("bash", "-x", script)
+	cmd := exec.Command("bash", "-c", script)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		panic(err) // TODO
@@ -27,19 +26,28 @@ func cmd(script string) {
 	}
 }
 
-func request(requests *gin.Context, config model.Config) {
-	name := requests.Param("name")
-	password := requests.DefaultQuery("keyword", "")
+func request(context *gin.Context) {
+	name := context.Param("name")
+	password := context.DefaultQuery("password", "")
 	webhook, err := config.Get(name)
 	if err != nil {
-		panic(err) // TODO
+		context.JSON(http.StatusOK, gin.H{
+			"status": http.StatusNotFound,
+			"message": "record not found",
+		})
+	} else {
+		if password == webhook.Password {
+			go cmd(webhook.Script)
+		}
+		context.JSON(http.StatusOK, gin.H{
+			"status":  http.StatusAccepted,
+			"message": "success",
+		})
 	}
-	if password == webhook.Password {
-		go cmd(webhook.Script)
-	}
-	requests.JSON(http.StatusOK, gin.H{
-		"status":  http.StatusOK,
-		"message": "success",
-		"name":    webhook.Name,
+}
+
+func notFound(context *gin.Context) {
+	context.JSON(http.StatusNotFound, gin.H{
+		"status": http.StatusNotFound,
 	})
 }
