@@ -12,8 +12,11 @@ script:
 after_success:
   - rm -rf .git
   - git clone https://${GH_REF} -b ${P_BRANCH} tmpdir
-  - cp webhook webhook.service README.md tmpdir
-  - cd tmpdir
+  - mkdir pushdir
+  - mkdir pushdir/systemd
+  - cp -r tmpdir/.git webhook README.md pushdir
+  - cp webhook.service pushdir/systemd/
+  - cd pushdir
   - chmod +x webhook
   - git config user.name "${U_NAME}"
   - git config user.email "${U_EMAIL}"
