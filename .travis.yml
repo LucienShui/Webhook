@@ -1,0 +1,35 @@
+language: go
+
+go:
+  - master
+
+install:
+  - bash dep.sh
+
+script:
+  - go build -o webhook
+
+after_success:
+  - rm -rf .git
+  - git clone https://${GH_REF} -b ${P_BRANCH} tmpdir
+  - cp webhook webhook.service README.md tmpdir
+  - cd tmpdir
+  - git config user.name "${U_NAME}"
+  - git config user.email "${U_EMAIL}"
+  - git add --all
+  - git commit -m "build from travis-ci `TZ=UTC-8 date +'%Y-%m-%d %H:%M:%S'`"
+  - git push https://${GH_TOKEN}@${GH_REF} ${P_BRANCH}
+
+branches:
+  only:
+    - master
+
+notifications:
+  email:
+    - lucien@lucien.ink
+  on_failure: always
+
+env:
+  global:
+    - GH_REF: github.com/LucienShui/Webhook.git
+    - P_BRANCH: build

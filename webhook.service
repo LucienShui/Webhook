@@ -1,0 +1,13 @@
+[Unit]
+Description=Webhook Server Service
+After=network.target
+
+[Service]
+Type=simple
+User=nobody
+Restart=on-failure
+RestartSec=5s
+ExecStart=/usr/local/webhook/webhook -c /etc/webhook/config.json
+
+[Install]
+WantedBy=multi-user.target
