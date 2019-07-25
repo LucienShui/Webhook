@@ -22,6 +22,7 @@ func init() {
 	gin.SetMode(gin.ReleaseMode)
 	router = gin.Default()
 	router.GET("/:name", request)
+	router.GET("/:name/log", queryLog)
 	router.NoRoute(notFound)
 }
 

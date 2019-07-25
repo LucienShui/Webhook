@@ -20,7 +20,7 @@ type History struct {
 	UpdatedAt time.Time
 }
 
-func (object *History) Save() error {
+func (object History) Save() error {
 	if object.Name == "" {
 		return errors.New("empty name")
 	}
@@ -28,4 +28,8 @@ func (object *History) Save() error {
 		return db.Create(&object).Error
 	}
 	return db.Save(&object).Error
+}
+
+func (object *History) Load() error {
+	return db.Find(&object, "`name` = ?", object.Name).Error
 }

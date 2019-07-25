@@ -12,7 +12,6 @@ package model
 import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
-	"os"
 )
 
 var db *gorm.DB
@@ -22,10 +21,6 @@ func init() {
 	db, err = gorm.Open("sqlite3", "webhook.db")
 	if err != nil {
 		panic(err)
-	}
-
-	if os.Getenv("GIN_MODE") != "release" {
-		db = db.Debug()
 	}
 
 	if !db.HasTable(&History{}) {

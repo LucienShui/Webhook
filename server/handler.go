@@ -18,13 +18,13 @@ import (
 )
 
 func cmd(webhook model.Webhook) {
-	logger.Info("execute command: '%s'", webhook.Script)
 	cmd := exec.Command("bash", "-c", webhook.Script)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
+		logger.Info("execute command: '%s' failed", webhook.Script)
 		logger.Warn(err)
 	} else {
-		logger.Info("command output:\n%s", string(out))
+		logger.Info("command [%s] output:\n%s", webhook.Script, string(out))
 		history := model.History{
 			Name: webhook.Name,
 			Content: string(out),
@@ -51,6 +51,22 @@ func request(context *gin.Context) {
 		context.JSON(http.StatusOK, gin.H{
 			"status":  http.StatusAccepted,
 			"message": "success",
+		})
+	}
+}
+
+func queryLog(context *gin.Context) {
+	history := model.History{Name: context.Param("name")}
+	if err := history.Load(); err != nil {
+		logger.Warn(err)
+		context.JSON(http.StatusOK, gin.H{
+			"status": http.StatusInternalServerError,
+			"message": err,
+		})
+	} else {
+		context.JSON(http.StatusOK, gin.H{
+			"status": http.StatusOK,
+			"message": history.Content,
 		})
 	}
 }
