@@ -46,27 +46,34 @@ func request(context *gin.Context) {
 		})
 	} else {
 		if password == webhook.Password {
+			context.JSON(http.StatusOK, gin.H{
+				"status":  http.StatusAccepted,
+				"message": "success",
+			})
 			go cmd(webhook)
+		} else {
+			context.JSON(http.StatusOK, gin.H{
+				"status":  http.StatusUnauthorized,
+				"message": "password wrong",
+			})
+			logger.Warn("password wrong")
 		}
-		context.JSON(http.StatusOK, gin.H{
-			"status":  http.StatusAccepted,
-			"message": "success",
-		})
 	}
 }
 
 func queryLog(context *gin.Context) {
 	history := model.History{Name: context.Param("name")}
 	if err := history.Load(); err != nil {
-		logger.Warn(err)
 		context.JSON(http.StatusOK, gin.H{
 			"status": http.StatusInternalServerError,
 			"message": err,
 		})
+		logger.Warn(err)
 	} else {
 		context.JSON(http.StatusOK, gin.H{
 			"status": http.StatusOK,
 			"message": history.Content,
+			"time": history.UpdatedAt.Format("2006-01-02 15:04:05"),
 		})
 	}
 }

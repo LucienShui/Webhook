@@ -1,16 +1,16 @@
 {
-    "address": "0.0.0.0",
-    "port": 10086,
-    "webhooks": [
-        {
-            "name": "hello",
-            "script": "set -x && echo 'Hello World!'",
-            "password": ""
-        },
-        {
-            "name": "test",
-            "script": "echo 'Password'",
-            "password": "password"
-        }
-    ]
+  "address": "0.0.0.0",
+  "port": 10086,
+  "webhooks": [
+    {
+      "name": "beat",
+      "script": "echo 'It works!'",
+      "password": ""
+    },
+    {
+      "name": "hello",
+      "script": "set -x && echo 'Hello World!'",
+      "password": "password"
+    }
+  ]
 }
