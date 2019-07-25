@@ -70,11 +70,17 @@ func queryLog(context *gin.Context) {
 		})
 		logger.Warn(err)
 	} else {
-		context.JSON(http.StatusOK, gin.H{
-			"status": http.StatusOK,
-			"message": history.Content,
-			"time": history.UpdatedAt.Format("2006-01-02 15:04:05"),
-		})
+		rawRequest := context.DefaultQuery("raw", "false")
+		if rawRequest == "true" {
+			context.String(http.StatusOK,
+				"[%s]\n%s", history.UpdatedAt.Format("2006-01-02 15:04:05"), history.Content)
+		} else {
+			context.JSON(http.StatusOK, gin.H{
+				"status": http.StatusOK,
+				"message": history.Content,
+				"time": history.UpdatedAt.Format("2006-01-02 15:04:05"),
+			})
+		}
 	}
 }
 
