@@ -10,26 +10,27 @@
 package server
 
 import (
-	"fmt"
 	"github.com/LucienShui/Webhook/model"
 	"github.com/gin-gonic/gin"
+	"github.com/wonderivan/logger"
 	"net/http"
 	"os/exec"
 )
 
 func cmd(webhook model.Webhook) {
+	logger.Info("execute command: '%s'", webhook.Script)
 	cmd := exec.Command("bash", "-c", webhook.Script)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		panic(err) // TODO
+		logger.Warn(err)
 	} else {
-		fmt.Println(string(out))
+		logger.Info("command output:\n%s", string(out))
 		history := model.History{
 			Name: webhook.Name,
 			Content: string(out),
 		}
 		if err := history.Save(); err != nil {
-			panic(err) // TODO
+			logger.Warn(err)
 		}
 	}
 }

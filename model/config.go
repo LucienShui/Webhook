@@ -10,8 +10,11 @@
 package model
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"github.com/wonderivan/logger"
 	"io/ioutil"
 )
 
@@ -24,12 +27,26 @@ type Config struct {
 func (config *Config) Load(filename string) {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
-		panic(err) // TODO
+		logger.Fatal(err)
 	}
 	err = json.Unmarshal(data, &config)
 	if err != nil {
-		panic(err) // TODO
+		logger.Fatal(err)
 	}
+	configPrinter(*config)
+}
+
+func configPrinter(config Config) {
+	buf := bytes.NewBufferString("config loaded:\n")
+	buf.WriteString(fmt.Sprintf("Address: %s\n", config.Address))
+	buf.WriteString(fmt.Sprintf("Port: %d\n", config.Port))
+	buf.WriteString("Records: [")
+	length := len(config.Webhooks)
+	for i := 0; i < length - 1; i++ {
+		buf.WriteString(fmt.Sprintf("%s, ", config.Webhooks[i].Name))
+	}
+	buf.WriteString(fmt.Sprintf("%s]\n", config.Webhooks[length - 1].Name))
+	logger.Info(buf.String())
 }
 
 func (config *Config) Get(name string) (Webhook, error) {

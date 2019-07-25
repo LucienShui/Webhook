@@ -27,7 +27,7 @@ func init() {
 func Parse() bool { // return true for continue
 	flag.Parse()
 	if version {
-		fmt.Println("0.0.2")
+		fmt.Println("0.0.3")
 		return false
 	}
 	return true

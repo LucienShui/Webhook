@@ -17,7 +17,7 @@ import (
 func main() {
 	if flag.Parse() {
 		if err := server.Run(flag.Config); err != nil {
-			panic(err) // TODO
+			panic(err)
 		}
 	}
 }
