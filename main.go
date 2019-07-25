@@ -10,11 +10,14 @@
 package main
 
 import (
+	"github.com/LucienShui/Webhook/flag"
 	"github.com/LucienShui/Webhook/server"
 )
 
 func main() {
-	if err := server.Run(); err != nil {
-		panic(err) // TODO
+	if flag.Parse() {
+		if err := server.Run(flag.Config); err != nil {
+			panic(err) // TODO
+		}
 	}
 }

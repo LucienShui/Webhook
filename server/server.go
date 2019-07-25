@@ -19,12 +19,13 @@ var router *gin.Engine
 var config = model.Config{}
 
 func init() {
+	gin.SetMode(gin.ReleaseMode)
 	router = gin.Default()
-	config.Load("config.json")
 	router.GET("/:name", request)
 	router.NoRoute(notFound)
 }
 
-func Run() error {
+func Run(filename string) error {
+	config.Load(filename)
 	return router.Run(fmt.Sprintf("%s:%d", config.Address, config.Port))
 }
