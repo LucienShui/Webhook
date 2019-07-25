@@ -14,6 +14,7 @@ after_success:
   - git clone https://${GH_REF} -b ${P_BRANCH} tmpdir
   - cp webhook webhook.service README.md tmpdir
   - cd tmpdir
+  - chmod +x webhook
   - git config user.name "${U_NAME}"
   - git config user.email "${U_EMAIL}"
   - git add --all
