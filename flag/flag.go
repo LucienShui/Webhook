@@ -21,7 +21,7 @@ var (
 
 func init() {
 	flag.BoolVar(&version, "version", false, "Print version information")
-	flag.StringVar(&Config, "c", "config.json", "-c <config file>")
+	flag.StringVar(&Config, "c", "./config.json", "-c <config file>")
 }
 
 func Parse() bool { // return true for continue

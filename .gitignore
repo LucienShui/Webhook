@@ -5,6 +5,7 @@
 .idea
 
 # Binaries for programs and plugins
+webhook
 *.exe
 *.exe~
 *.dll

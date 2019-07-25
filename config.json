@@ -10,7 +10,7 @@
     {
       "name": "hello",
       "script": "set -x && echo 'Hello World!'",
-      "password": "password"
+      "password": "world"
     }
   ]
 }
