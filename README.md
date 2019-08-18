@@ -47,7 +47,7 @@ One can access the API `/:name?password=` to execute the script
 
 ### Execute
 
-`GET` `/:name?password=[password]`
+`POST` `/:name?password=[password]`
 
 #### Params
 
@@ -56,9 +56,15 @@ One can access the API `/:name?password=` to execute the script
 | name | string | record's name |
 | password | string | record's password |
 
+#### Example
+
+```bash
+curl -X POST <host>:[port]/hello?password=word
+```
+
 ### Log
 
-`GET` `/:name/log?raw=`
+`GET` `/log/:name?raw=true`
 
 #### Params
 
@@ -66,3 +72,10 @@ One can access the API `/:name?password=` to execute the script
 | :---: | :---: | --- |
 | name | string | record's name |
 | raw | bool | show execute's output in raw or not, false for default |
+
+#### Example
+
+```bash
+curl <host>:[port]/log/hello?raw=true
+curl <host>:[port]/log/hello
+```
