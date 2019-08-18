@@ -21,8 +21,8 @@ var config = model.Config{}
 func init() {
 	gin.SetMode(gin.ReleaseMode)
 	router = gin.Default()
-	router.GET("/:name", request)
-	router.GET("/:name/log", queryLog)
+	router.POST("/:name", request)
+	router.GET("/log/:name", queryLog)
 	router.NoRoute(notFound)
 }
 
